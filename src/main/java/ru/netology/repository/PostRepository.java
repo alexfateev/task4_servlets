@@ -8,12 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 // Stub
 public class PostRepository {
 
     private ConcurrentHashMap<Long, Post> repository = new ConcurrentHashMap<>();
-    private long id = 1;
+    private AtomicLong id = new AtomicLong(1);
 
     public List<Post> all() {
         List<Post> list = new ArrayList<>();
@@ -27,7 +28,7 @@ public class PostRepository {
 
     public Post save(Post post) {
         if (post.getId() == 0) {
-            repository.put(id++, post);
+            repository.put(id.incrementAndGet(), post);
         } else {
             if (repository.containsKey(post.getId())) {
                 repository.put(post.getId(), post);
